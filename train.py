@@ -6,7 +6,7 @@ from torch import nn
 from torch.utils.data import DataLoader, Dataset
 from sklearn.metrics import classification_report, confusion_matrix 
 
-from preprocessing import label_str
+from preprocessing import label_str, DEVICE
 
 
 def num_trainable_params(model: nn.Module):
@@ -44,10 +44,24 @@ def plot_confusion_matrix(cm, save_fn: str, classes=label_str, normalize=False,
 
 
 def train_loop(dataloader, model, loss_fn, optimizer):
+    model.train()  # turn on drop-out etc
     size = len(dataloader.dataset)
     num_batches = len(dataloader)
     total_loss, total_acc = 0, 0
     for batch, (X, y) in enumerate(dataloader):
+        
+        # Augment data and send to correct device (cpu or gpu)
+        if np.random.rand() < 0.5:  # augment data with 50% chance
+            brightness = 0.05 * np.random.randn()
+            black_pxl_val = X[0, 0, 0, 0]
+            black_idxs = X == black_pxl_val
+
+            X = X + brightness
+            X[black_idxs] = black_pxl_val
+
+        X = X.to(DEVICE)
+        y = y.to(DEVICE)
+
         # Compute prediction and loss
         pred = model(X)
         loss = loss_fn(pred, y)
@@ -67,6 +81,7 @@ def train_loop(dataloader, model, loss_fn, optimizer):
 
 
 def test_loop(dataloader, model, loss_fn, get_conf_matrix=False):
+    model.eval()  # turn off drop-out etc
     size = len(dataloader.dataset)
     num_batches = len(dataloader)
     test_loss, correct = 0, 0
@@ -74,6 +89,9 @@ def test_loop(dataloader, model, loss_fn, get_conf_matrix=False):
 
     with torch.no_grad():
         for X, y in dataloader:
+            X = X.to(DEVICE)
+            y = y.to(DEVICE)
+
             pred = model(X)
             test_loss += loss_fn(pred, y).item()
             correct += (pred.argmax(1) == y).type(torch.float).sum().item()
@@ -85,8 +103,8 @@ def test_loop(dataloader, model, loss_fn, get_conf_matrix=False):
         report = None
         conf_matrix = None
         if get_conf_matrix:
-            all_ys = torch.cat(all_ys)
-            all_preds = torch.cat(all_preds)
+            all_ys = torch.cat(all_ys).cpu()
+            all_preds = torch.cat(all_preds).cpu()
             conf_matrix = confusion_matrix(all_ys, all_preds)
             report = classification_report(all_ys, all_preds, digits=3)
 
@@ -114,6 +132,7 @@ def train_model(train: Dataset, valid: Dataset, model: nn.Module,
     train_losses, train_accs = [], []
     val_losses, val_accs = [], []
 
+    
     for t in range(max_epochs):
         print(f"Epoch {t+1}\n-------------------------------")
         train_loss, train_acc = train_loop(train_dataloader, model, loss_fn, optimizer)
@@ -136,8 +155,10 @@ def train_model(train: Dataset, valid: Dataset, model: nn.Module,
         
         if no_improvement > patience:
             print("\nEarly stopping: no improvement on val_loss for", patience, "epochs\n")
+            print(f"Best Validation Loss: {best_val_loss:>8f} \n")
             break
 
+    model.eval()  # turn off drop-out etc
     # plot train loss, val loss, train_acc and val_acc side by side
     plt.subplot(1, 2, 1) # row 1, col 2 index 1
     plt.plot(train_losses, label="Train Loss")

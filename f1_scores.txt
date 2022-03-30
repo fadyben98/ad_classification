@@ -30,25 +30,60 @@ Baseline MLP model: Sequential(
   (0): Linear(in_features=27000, out_features=4, bias=True)
 )
 Number of trainable parameters: 108004
+Best Validation Loss: 0.145112 
+
 Test: 
- Accuracy: 57.54%, Avg loss: 3.018776 
+ Accuracy: 56.45%, Avg loss: 3.816043 
 
               precision    recall  f1-score   support
 
-           0      1.000     0.056     0.106       179
+           0      1.000     0.061     0.116       179
            1      1.000     0.083     0.154        12
-           2      0.627     0.773     0.692       640
-           3      0.481     0.513     0.497       448
+           2      0.592     0.822     0.688       640
+           3      0.485     0.411     0.445       448
 
-    accuracy                          0.575      1279
-   macro avg      0.777     0.357     0.362      1279
-weighted avg      0.631     0.575     0.537      1279
+    accuracy                          0.565      1279
+   macro avg      0.769     0.344     0.351      1279
+weighted avg      0.616     0.565     0.518      1279
 
 Confusion matrix, without normalization
-[[ 10   0  71  98]
+[[ 11   0  92  76]
  [  0   1   6   5]
- [  0   0 495 145]
- [  0   0 218 230]]
+ [  0   0 526 114]
+ [  0   0 264 184]]
+
+
+
+
+
+ base deep mlp
+ Baseline MLP model: Sequential(
+  (0): Linear(in_features=27000, out_features=1000, bias=True)
+  (1): ReLU()
+  (2): Linear(in_features=1000, out_features=1000, bias=True)
+  (3): ReLU()
+  (4): Linear(in_features=1000, out_features=4, bias=True)
+)
+Number of trainable parameters: 28006004
+Test: 
+ Accuracy: 61.69%, Avg loss: 2.113830 
+
+              precision    recall  f1-score   support
+
+           0      0.882     0.251     0.391       179
+           1      1.000     0.167     0.286        12
+           2      0.722     0.641     0.679       640
+           3      0.505     0.741     0.600       448
+
+    accuracy                          0.617      1279
+   macro avg      0.777     0.450     0.489      1279
+weighted avg      0.671     0.617     0.607      1279
+
+Confusion matrix, without normalization
+[[ 45   0  43  91]
+ [  0   2   0  10]
+ [  5   0 410 225]
+ [  1   0 115 332]]
 
 
 

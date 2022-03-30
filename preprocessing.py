@@ -7,7 +7,7 @@ from torchvision import transforms, datasets
 from torch.utils.data import random_split
 from typing import Tuple
 
-DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
+DEVICE = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 print(f"Using {DEVICE} device")
 
 DATASET_DIR = "dataset"

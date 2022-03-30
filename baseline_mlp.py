@@ -2,12 +2,16 @@ import torch
 from torch import nn
 from torch.utils.data import DataLoader
 
-from preprocessing import load_dataset
+from preprocessing import load_dataset, DEVICE
 from train import train_model, num_trainable_params, evaluate_model
 
-SHALLOW_MODEL_FN  = "baseline_shallow_mlp.pth"
-SHALLOW_FIG_FN    = "baseline_shallow_mlp_curves.pdf"
-SALLOW_FIG_CONF_FN = "baseline_shallow_mlp_conf.pdf"
+SHALLOW_MODEL_FN    = "baseline_shallow_mlp.pth"
+SHALLOW_FIG_FN      = "baseline_shallow_mlp_curves.pdf"
+SHALLOW_FIG_CONF_FN = "baseline_shallow_mlp_conf.pdf"
+
+DEEP_MODEL_FN    = "baseline_deep_mlp.pth"
+DEEP_FIG_FN      = "baseline_deep_mlp_curves.pdf"
+DEEP_FIG_CONF_FN = "baseline_deep_mlp_conf.pdf"
 
 
 class BaseLineMLP(nn.Module):
@@ -41,7 +45,7 @@ class BaseLineMLP(nn.Module):
         mods.append(nn.Linear(dims[-2], dims[-1]))
         if output_activation:
             mods.append(output_activation())
-        return nn.Sequential(*mods)
+        return nn.Sequential(*mods).to(DEVICE)
 
     def forward(self, x):
         # don't need RGB channels, since they are all duplicates of grayscale channel
@@ -55,12 +59,22 @@ if __name__ == "__main__":
     train, valid, test = load_dataset()
     input_size = train[0][0].size()
     input_size = input_size[-1] * input_size[-2] # Width * Height
+    
     shallow_mlp = BaseLineMLP(input_size)
 
     train_model(train, valid, shallow_mlp, SHALLOW_MODEL_FN , SHALLOW_FIG_FN, max_epochs=100, patience=10)
 
     shallow_mlp.load_state_dict(torch.load(SHALLOW_MODEL_FN))  # load the best model from train_model
-    evaluate_model(test, shallow_mlp, SALLOW_FIG_CONF_FN),   
+    evaluate_model(test, shallow_mlp, SHALLOW_FIG_CONF_FN)
+    
+
+    # now do the deep MLP
+    deep_model = BaseLineMLP(input_size, [1000, 1000])
+
+    #train_model(train, valid, deep_model, DEEP_MODEL_FN , DEEP_FIG_FN, max_epochs=100, patience=10)
+
+    deep_model.load_state_dict(torch.load(DEEP_MODEL_FN))  # load the best model from train_model
+    evaluate_model(test, deep_model, DEEP_FIG_CONF_FN)
 
 
     
