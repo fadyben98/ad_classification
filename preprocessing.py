@@ -17,6 +17,11 @@ TEST_DIR = DATASET_DIR + os.sep + "test"
 # idx is label number
 label_str = ["Mild", "Moderate", "Normal", "Very Mild"]
 
+# train means across cropped channels: [0.38252535 0.38252535 0.38252535]
+# train std across cropped channels: [0.32482532 0.32482532 0.32482532]
+# can use for standardization
+mean, std = 0.38252535, 0.32482532
+
 def get_counts(dataset: datasets.ImageFolder, save_fn="grid_of_images.pdf"):
     # get counts and display grid of images with labels
     counts = {}
@@ -53,7 +58,10 @@ def get_counts(dataset: datasets.ImageFolder, save_fn="grid_of_images.pdf"):
 
 
 def load_dataset(train_split=0.8, display_images=False) -> Tuple[datasets.ImageFolder]:
-    preprocess_transforms = transforms.Compose([transforms.ToTensor()])
+    
+    preprocess_transforms = transforms.Compose([transforms.ToTensor(),
+        transforms.CenterCrop((180, 150)), # crop images to (180, 150)
+        transforms.Normalize([mean] * 3, [std] * 3)])
 
     # train and test will have 3 channels (3, H, W), but since the image is grayscale
     # the 3 channels have exactly the same values
@@ -71,10 +79,10 @@ def load_dataset(train_split=0.8, display_images=False) -> Tuple[datasets.ImageF
     test = datasets.ImageFolder("dataset/test", transform=preprocess_transforms)
 
     if display_images:
-        get_counts(train)
+        get_counts(train, "grid_of_images.pdf")
         if valid is not None:
             get_counts(valid, None)
-        get_counts(test, "grid_of_images_test.pdf")
+        get_counts(test, "grid_of_test_images.pdf")
 
     return train, valid, test
 

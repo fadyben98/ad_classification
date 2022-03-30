@@ -1,4 +1,4 @@
-baseline shallow mlp:
+baseline shallow mlp (no preprocessing such as cropping or standardisation):
 Baseline MLP model: Sequential(
   (0): Linear(in_features=36608, out_features=4, bias=True)
 )
@@ -25,10 +25,36 @@ Confusion matrix, without normalization
 
 
 
+base shallow mlp (all models now use preprocessed data), get similar performance but with way fewer epochs and parameters
+Baseline MLP model: Sequential(
+  (0): Linear(in_features=27000, out_features=4, bias=True)
+)
+Number of trainable parameters: 108004
+Test: 
+ Accuracy: 57.54%, Avg loss: 3.018776 
+
+              precision    recall  f1-score   support
+
+           0      1.000     0.056     0.106       179
+           1      1.000     0.083     0.154        12
+           2      0.627     0.773     0.692       640
+           3      0.481     0.513     0.497       448
+
+    accuracy                          0.575      1279
+   macro avg      0.777     0.357     0.362      1279
+weighted avg      0.631     0.575     0.537      1279
+
+Confusion matrix, without normalization
+[[ 10   0  71  98]
+ [  0   1   6   5]
+ [  0   0 495 145]
+ [  0   0 218 230]]
 
 
 
 
 
 
- 
+
+
+
