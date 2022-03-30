@@ -59,7 +59,7 @@ if __name__ == "__main__":
 
     train_model(train, valid, shallow_mlp, SHALLOW_MODEL_FN , SHALLOW_FIG_FN, max_epochs=100, patience=10)
 
-    shallow_mlp.load_state_dict(torch.load(SHALLOW_MODEL_FN))
+    shallow_mlp.load_state_dict(torch.load(SHALLOW_MODEL_FN))  # load the best model from train_model
     evaluate_model(test, shallow_mlp, SALLOW_FIG_CONF_FN),   
 
 
