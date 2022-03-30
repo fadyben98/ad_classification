@@ -1,0 +1,34 @@
+baseline shallow mlp:
+Baseline MLP model: Sequential(
+  (0): Linear(in_features=36608, out_features=4, bias=True)
+)
+Number of trainable parameters: 146436
+Test: 
+ Accuracy: 57.62%, Avg loss: 1.989750 
+
+              precision    recall  f1-score   support
+
+           0      0.895     0.095     0.172       179
+           1      1.000     0.083     0.154        12
+           2      0.577     0.923     0.710       640
+           3      0.547     0.286     0.375       448
+
+    accuracy                          0.576      1279
+   macro avg      0.755     0.347     0.353      1279
+weighted avg      0.615     0.576     0.512      1279
+
+Confusion matrix, without normalization
+[[ 17   0 109  53]
+ [  0   1   7   4]
+ [  0   0 591  49]
+ [  2   0 318 128]] 
+
+
+
+
+
+
+
+
+
+ 
