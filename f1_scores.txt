@@ -85,6 +85,79 @@ Confusion matrix, without normalization
  [  5   0 410 225]
  [  1   0 115 332]]
 
+ 
+CNN model:
+Best Validation Loss: 0.033501 
+
+Test: 
+ Accuracy: 69.74%, Avg loss: 1.869457 
+
+              precision    recall  f1-score   support
+
+           0      0.802     0.430     0.560       179
+           1      1.000     0.250     0.400        12
+           2      0.752     0.778     0.765       640
+           3      0.606     0.701     0.650       448
+
+    accuracy                          0.697      1279
+   macro avg      0.790     0.540     0.594      1279
+weighted avg      0.710     0.697     0.693      1279
+
+Confusion matrix, without normalization
+[[ 77   0  33  69]
+ [  0   3   5   4]
+ [ 11   0 498 131]
+ [  8   0 126 314]] 
+
+
+
+
+ResNet Model:
+Best Validation Loss: 0.035592 
+
+Test: 
+ Accuracy: 73.10%, Avg loss: 1.456225 
+
+              precision    recall  f1-score   support
+
+           0      0.938     0.419     0.579       179
+           1      1.000     0.333     0.500        12
+           2      0.739     0.850     0.791       640
+           3      0.680     0.696     0.688       448
+
+    accuracy                          0.731      1279
+   macro avg      0.839     0.575     0.639      1279
+weighted avg      0.749     0.731     0.722      1279
+
+Confusion matrix, without normalization
+[[ 75   0  56  48]
+ [  0   4   3   5]
+ [  2   0 544  94]
+ [  3   0 133 312]]
+
+
+
+ SVM using ResNet as feature extractor:
+ Test: 
+ Accuracy: 72.95%, Avg loss: 0.737267 
+
+              precision    recall  f1-score   support
+
+           0      0.900     0.453     0.602       179
+           1      1.000     0.167     0.286        12
+           2      0.751     0.841     0.794       640
+           3      0.662     0.696     0.679       448
+
+    accuracy                          0.729      1279
+   macro avg      0.828     0.539     0.590      1279
+weighted avg      0.743     0.729     0.722      1279
+
+Confusion matrix, without normalization
+[[ 81   0  46  52]
+ [  0   2   3   7]
+ [  2   0 538 100]
+ [  7   0 129 312]]
+
 
 
 

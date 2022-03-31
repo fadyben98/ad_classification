@@ -121,7 +121,7 @@ if __name__ == "__main__":
     
     cnn = Conv5_FC3(input_size)
 
-    train_model(train, valid, cnn, MODEL_FN , MODEL_FIG_FN, max_epochs=20000, patience=250)
+    train_model(train, valid, cnn, MODEL_FN , MODEL_FIG_FN, max_epochs=20000, patience=200)
 
     cnn.load_state_dict(torch.load(MODEL_FN))  # load the best model from train_model
     evaluate_model(test, cnn, MODEL_FIG_CONF_FN)
