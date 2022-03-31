@@ -57,11 +57,12 @@ def get_counts(dataset: datasets.ImageFolder, save_fn="grid_of_images.pdf"):
     plt.show()
 
 
-def load_dataset(train_split=0.8, display_images=False) -> Tuple[datasets.ImageFolder]:
+def load_dataset(train_split=0.8, display_images=False, resize=(180, 150)) -> Tuple[datasets.ImageFolder]:
     
     preprocess_transforms = transforms.Compose([transforms.ToTensor(),
-        transforms.CenterCrop((180, 150)), # crop images to (180, 150)
-        transforms.Normalize([mean] * 3, [std] * 3)])
+        transforms.CenterCrop((180, 150))] + # crop images to (180, 150)
+        ([] if resize == (180, 150) else [transforms.Resize(resize)]) +
+        [transforms.Normalize([mean] * 3, [std] * 3)])
 
     # train and test will have 3 channels (3, H, W), but since the image is grayscale
     # the 3 channels have exactly the same values
