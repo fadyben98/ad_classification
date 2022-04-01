@@ -50,6 +50,13 @@ class SVM_Wrapper(nn.Module):
         return x
 
 
+class Identity(nn.Module):
+    def __init__(self):
+        super(Identity, self).__init__()
+        
+    def forward(self, x):
+        return x
+
 if __name__ == "__main__":
     train, valid, test = load_dataset()
     input_size = train[0][0].size()
@@ -59,6 +66,7 @@ if __name__ == "__main__":
     # replace last fc layer for 4 way classification
     model_conv.fc = nn.Linear(num_ftrs, len(label_str))
     model_conv.load_state_dict(torch.load(FEATURE_EXTRACTOR_FN))  # load feature extractor
+    model_conv.fc = Identity()  # take predictions from the layer before last
     
     svm_model = SVM_Wrapper(train, valid, model_conv)
     evaluate_model(test, svm_model, MODEL_FIG_CONF_FN)

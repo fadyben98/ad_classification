@@ -53,7 +53,7 @@ def get_counts(dataset: datasets.ImageFolder, save_fn="grid_of_images.pdf"):
         for col, ax in enumerate(axs):
             im = imgs[row][col][0][0].numpy()
             ax.imshow(im)
-    plt.savefig(save_fn)
+    #plt.savefig(save_fn)
     plt.show()
 
 
