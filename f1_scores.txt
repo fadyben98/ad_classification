@@ -138,27 +138,26 @@ Confusion matrix, without normalization
 
 
 
- SVM using ResNet as feature extractor:
- Test: 
- Accuracy: 72.95%, Avg loss: 0.737267 
+SVM using ResNet as feature extractor:
+Test: 
+ Accuracy: 73.26%, Avg loss: 0.733352 
 
               precision    recall  f1-score   support
 
-           0      0.900     0.453     0.602       179
+           0      0.892     0.464     0.610       179
            1      1.000     0.167     0.286        12
-           2      0.751     0.841     0.794       640
-           3      0.662     0.696     0.679       448
+           2      0.753     0.842     0.795       640
+           3      0.669     0.699     0.683       448
 
-    accuracy                          0.729      1279
-   macro avg      0.828     0.539     0.590      1279
-weighted avg      0.743     0.729     0.722      1279
+    accuracy                          0.733      1279
+   macro avg      0.829     0.543     0.594      1279
+weighted avg      0.745     0.733     0.725      1279
 
 Confusion matrix, without normalization
-[[ 81   0  46  52]
+[[ 83   0  47  49]
  [  0   2   3   7]
- [  2   0 538 100]
- [  7   0 129 312]]
-
+ [  2   0 539  99]
+ [  8   0 127 313]]
 
 
 Vision Transformer (DeiT)
